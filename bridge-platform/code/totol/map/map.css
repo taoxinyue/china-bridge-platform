@@ -1,0 +1,334 @@
+/* 地图模块 1080×840 — 深色大屏风 + 米色/橙/棕 3D 省级设色 */
+.map-module {
+  --map-bg-deep: #0a1628;
+  --map-bg-mid: #122238;
+  --map-cream: #faf4e8;
+  --map-brown: #6b4423;
+  --map-accent: #7ee8ff;
+  /* 与 .map-chart 的 margin-top / height 微调一致；改一处即可同步上移量 */
+  --map-chart-shift: 40px;
+  /* 主图区域底部留白（与上移分开可调） */
+  --map-chart-pad-bottom: 0px;
+
+  position: relative;
+  /* 高于 .overview-appreciation-group，避免总览整体上移时盖住地图底部与南海附图 */
+  z-index: 2;
+  width: 800px;
+  max-width: 100%;
+  height: 600px;
+  margin: 0px auto;
+  /* 相对居中位置整体左移 300px */
+  transform: translateX(-300px);
+  border-radius: 0;
+  /* 裁切改到 .map-chart-wrap，避免主图 translateY 被裁顶 */
+  overflow: visible;
+  box-sizing: border-box;
+  /* background:
+    radial-gradient(ellipse 120% 80% at 50% 18%, rgba(30, 58, 95, 0.38) 0%, transparent 55%),
+    radial-gradient(ellipse 90% 60% at 85% 88%, rgba(20, 40, 70, 0.42) 0%, transparent 50%),
+    linear-gradient(165deg, var(--map-bg-deep) 0%, var(--map-bg-mid) 45%, #0d1f35 100%);*/
+  /*border: 1px solid rgba(126, 232, 255, 0.12);*/
+  /*box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 18px 48px rgba(0, 0, 0, 0.45);*/
+}
+
+.map-module::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+  overflow: hidden;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.map-chart-wrap {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  /* 向上扩展（translateY）+ 向下多留一截高度，padding-bottom 为底部留白 */
+  height: calc(100% + var(--map-chart-shift) + var(--map-chart-pad-bottom));
+  margin-top: calc(-1 * var(--map-chart-shift));
+  padding-bottom: var(--map-chart-pad-bottom);
+  border-radius: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.map-chart {
+  width: 100%;
+  box-sizing: border-box;
+  /*
+   * 用增高 + 负 margin-top 代替 translateY：画布在布局上填满 .map-chart-wrap，
+   * 顶部由 overflow:hidden 裁掉，底部不再留透明缝透出页面米色底。
+   */
+  height: calc(100% + var(--map-chart-shift));
+  margin-top: calc(-1 * var(--map-chart-shift));
+  /* 仅主图左移 20px（与 map.js 中 MAP_CHART_OFFSET_X 同步） */
+  margin-left: -20px;
+}
+
+/* 右下角：南海诸岛 + 九段线（2D，与主 3D 图分离） */
+.map-chart-inset-wrap {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 15;
+  width: 168px;
+  padding: 6px 8px 8px;
+  border-radius: 12px;
+  background: linear-gradient(180deg,
+  rgba(252, 241, 220, 0.82) 0%,
+  rgba(252, 241, 220, 0.82) 100%,
+    );
+   
+  border: 1px solid rgba(126, 232, 255, 0.28);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+}
+
+.map-chart-inset-title {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: rgba(92, 58, 42, 0.95);
+  text-align: center;
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+
+.map-chart-inset {
+  width: 152px;
+  height: 118px;
+}
+
+/* 省会：水滴标 + 双圈晕染 */
+.map-marker {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  margin-left: -22px;
+  margin-top: -44px;
+  pointer-events: none;
+  z-index: 20;
+  display: none;
+}
+
+.map-marker-pin {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 22px;
+  height: 28px;
+  margin-left: -11px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(230, 245, 255, 0.78) 100%);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow:
+    0 0 12px rgba(126, 232, 255, 0.85),
+    0 0 24px rgba(126, 232, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.map-marker-pin::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  left: 50%;
+  top: 50%;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  background: rgba(100, 180, 220, 0.95);
+  box-shadow: 0 0 8px rgba(126, 232, 255, 0.9);
+}
+
+.map-marker-ripple {
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 36px;
+  height: 36px;
+  margin-left: -18px;
+  margin-bottom: -18px;
+  border-radius: 50%;
+  border: 2px solid rgba(126, 232, 255, 0.55);
+  animation: mapMarkerRipple 2s ease-out infinite;
+}
+
+.map-marker-ripple:nth-child(2) {
+  animation-delay: 0.65s;
+}
+
+@keyframes mapMarkerRipple {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.map-bridge-panel {
+  position: absolute;
+  top: 20px;
+  right: 0;
+  z-index: 25;
+  width: 152px;
+  padding: 8px 8px 10px;
+  border-radius: 14px;
+  background: linear-gradient(180deg,
+      rgba(234, 237, 243, 0.98) 100%,
+      rgba(227, 236, 249, 0.98) 100%,
+    );
+  border: 1px solid rgba(126, 232, 255, 0.2);
+  /* box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);*/
+  backdrop-filter: blur(8px);
+}
+
+.map-source-note {
+  position: absolute;
+  left: 0;
+  bottom: 10px;
+  z-index: 26;
+  font-size: 11px;
+  line-height: 1.45;
+  /*color: rgba(92, 58, 42, 0.9);
+  background: rgba(252, 241, 220, 0.78);*/
+  padding: 6px 10px;
+  border-radius: 8px;
+  /*border: 1px solid rgba(148, 112, 76, 0.22);
+  box-shadow: 0 4px 12px rgba(80, 56, 36, 0.12);*/
+}
+
+.map-bridge-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.map-bridge-panel.is-collapsed .map-bridge-header {
+  margin-bottom: 0;
+}
+
+.map-bridge-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(92, 58, 42, 0.95);
+  text-align: left;
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+}
+
+.map-bridge-toggle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 8px;
+  background: rgba(126, 232, 255, 0.12);
+  color: rgba(92, 58, 42, 0.9);
+  cursor: pointer;
+  transition:
+    background 0.15s ease,
+    transform 0.2s ease;
+}
+
+.map-bridge-toggle:hover {
+  background: rgba(126, 232, 255, 0.22);
+}
+
+.map-bridge-toggle:focus-visible {
+  outline: 2px solid rgba(126, 232, 255, 0.55);
+  outline-offset: 2px;
+}
+
+.map-bridge-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.map-bridge-panel.is-collapsed .map-bridge-toggle-icon {
+  transform: rotate(-90deg);
+}
+
+.map-bridge-panel.is-collapsed .map-bridge-list {
+  display: none;
+}
+
+.map-bridge-list {
+  width: 132px;
+  height: 220px;
+  margin: 0;
+  padding: 0 4px 0 0;
+  list-style: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(126, 232, 255, 0.35) transparent;
+}
+
+.map-bridge-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.map-bridge-list::-webkit-scrollbar-thumb {
+  background: rgba(126, 232, 255, 0.35);
+  border-radius: 4px;
+}
+
+.map-bridge-list li {
+  font-size: 11px;
+  line-height: 1.45;
+  color: rgba(92, 58, 42, 0.92);
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(92, 58, 42, 0.12);
+  word-break: break-all;
+}
+
+.map-bridge-list li:last-child {
+  border-bottom: none;
+}
+
+.map-bridge-list li.map-bridge-item {
+  cursor: pointer;
+}
+
+.map-bridge-list li.map-bridge-item:hover {
+  text-decoration: underline;
+  color: rgba(72, 44, 32, 0.98);
+}
+
+.map-bridge-empty {
+  font-size: 11px;
+  color: rgba(120, 88, 68, 0.72);
+  padding: 12px 6px;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.map-error-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(230, 200, 160, 0.9);
+  font-size: 14px;
+  text-align: center;
+  padding: 24px;
+}
