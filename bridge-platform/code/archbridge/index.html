@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>中国古桥可视化交互平台 - 拱桥</title>
+  <link rel="stylesheet" href="./archbridge.css" />
+  <link rel="stylesheet" href="../common/bridge-carousel.css" />
+</head>
+
+<body>
+  <main class="archbridge-page">
+    <div class="archbridge-title-wrap" id="bridge-title" aria-hidden="true">
+      <span class="char c1">拱</span>
+      <span class="char c2">桥</span>
+    </div>
+
+    <section class="fog-panel" id="fog-panel" aria-label="拱桥内容覆盖面板">
+      <div class="fog-panel-inner">
+        <section class="arch-section arch-definition" aria-labelledby="arch-def-title">
+          <h2 id="arch-def-title" class="arch-section-title">拱桥</h2>
+          <div class="arch-section-divider" aria-hidden="true"></div>
+          <p class="arch-section-text">
+            拱桥（arch
+            bridge）指的是在竖直平面内以拱作为结构主要承重构件的桥梁。垂直荷载通过弯拱传递给拱台，其最早并非用于园林造景，而是在工程中满足泄洪及桥下通航的目的。在形成和发展过程中，其桥身都是曲的，所以古时常称之为曲桥。
+          </p>
+        </section>
+
+        <section class="arch-section bridge-carousel-section" aria-label="拱桥赏析图集轮播">
+          <div
+            class="bridge-carousel"
+            data-bridge-carousel
+            data-images='[["../../img/赵州桥.jpg","赵州桥"],["../../img/卢沟桥.jpg","卢沟桥"],["../../img/十七孔桥.jpg","十七孔桥"],["../../img/宝带桥.jpg","宝带桥"]]'
+          >
+            <button type="button" class="bridge-carousel-btn bridge-carousel-btn-prev" aria-label="上一张">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <button type="button" class="bridge-carousel-btn bridge-carousel-btn-next" aria-label="下一张">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <div class="bridge-carousel-viewport">
+              <div class="bridge-carousel-track">
+                <figure class="bridge-carousel-slide is-prev"><img src="" alt="" decoding="async" /></figure>
+                <figure class="bridge-carousel-slide is-active"><img src="" alt="" decoding="async" /></figure>
+                <figure class="bridge-carousel-slide is-next"><img src="" alt="" decoding="async" /></figure>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="arch-section arch-famous" aria-labelledby="arch-famous-title">
+          <h2 id="arch-famous-title" class="arch-section-title">著名古代拱桥赏析</h2>
+          <div class="arch-section-divider" aria-hidden="true"></div>
+
+          <article class="famous-item is-image-left">
+            <figure class="famous-item-media">
+              <img src="../../img/赵州桥.jpg" alt="赵州桥" loading="lazy" />
+            </figure>
+            <div class="famous-item-content">
+              <div class="famous-item-headline" aria-hidden="true">
+                <span class="line"></span>
+                <span class="word">拱桥</span>
+              </div>
+              <h3 class="famous-item-title">赵州桥</h3>
+              <p class="famous-item-text">
+                赵州桥一般指安济桥。安济桥，中国四大古桥之一，是一座位于河北省石家庄市赵县城南洨河之上的石拱桥，因赵县古称赵州又称赵州桥。当地人称之为大石桥，以区别于城西门外的永通桥（小石桥）。安济桥始建于隋代，由匠师李春设计建造，后由宋哲宗赵煦赐名安济桥，并以之为正名。安济桥是世界上现存年代久远、跨度最大、保存最完整的单孔坦弧敞肩石拱桥，其建造工艺独特，在世界桥梁史上首创“敞肩拱”结构形式，具有较高的科学研究价值；雕作刀法苍劲有力，艺术风格新颖豪放，显示了隋代浑厚、严整、俊逸的石雕风貌，桥体饰纹雕刻精细，具有较高的艺术价值。安济桥在中国造桥史上占有重要地位，对全世界后代桥梁建筑有着深远的影响。
+              </p>
+            </div>
+          </article>
+
+          <article class="famous-item is-image-right">
+            <figure class="famous-item-media">
+              <img src="../../img/卢沟桥.jpg" alt="卢沟桥" loading="lazy" />
+            </figure>
+            <div class="famous-item-content">
+              <div class="famous-item-headline" aria-hidden="true">
+                <span class="line"></span>
+                <span class="word">拱桥</span>
+              </div>
+              <h3 class="famous-item-title">卢沟桥</h3>
+              <p class="famous-item-text">
+                卢沟桥（Lugou
+                Bridge），亦称芦沟桥，位于北京市丰台区永定河上，因横跨卢沟河（即永定河）而得名，是北京市现存古老的石造联拱桥。也是华北最大的古代石拱桥。卢沟桥始建于金大定二十九年（南宋淳熙十六年，1189年），金明昌三年（1192年）建成。明、清都曾加以修葺，如今桥的形制、桥基、桥身的构件和桥上石雕部分仍为金代原物。民国二十六年（1937年）7月7日，日本在此发动全面侵华战争，史称“卢沟桥事变”（亦称“七七事变”）。
+                中国抗日军队在卢沟桥打响了全面抗战的第一枪。卢沟桥为十一孔不等跨连续圆拱桥，全长212.2米，加上两端引桥，总长266.5米，宽9.3米，墩前尖后方，迎水面砌成分水尖，并在每个分水尖上安置一根长约26厘米的三角形铁柱，以其锐角迎击冰块，保护桥墩，人称“斩龙剑”。桥墩的另一头，形如船尾，水流出券洞即可分散，减少券洞内水流的压力。卢沟桥的石雕精美奇特，构思巧妙，具有浓厚的民族特色。卢沟桥作为北京市现存最古老的石造联拱桥和全民族抗战爆发地，不仅是北京市丰台区的重要文化资源，也是影响深远的国家重大活动纪念地。
+              </p>
+            </div>
+          </article>
+
+          <article class="famous-item is-image-left">
+            <figure class="famous-item-media">
+              <img src="../../img/十七孔桥.jpg" alt="十七孔桥" loading="lazy" />
+            </figure>
+            <div class="famous-item-content">
+              <div class="famous-item-headline" aria-hidden="true">
+                <span class="line"></span>
+                <span class="word">拱桥</span>
+              </div>
+              <h3 class="famous-item-title">十七孔桥</h3>
+              <p class="famous-item-text">
+                十七孔桥（Seventeen-Arch
+                Bridge），又称长桥，位于北京市海淀区新建宫门路19号颐和园内，始建于清乾隆十五年（1750年），是连接东堤与南湖岛的石桥，也是中国皇家园林中现存最长的桥梁。十七孔桥是一座联拱石桥，东西向，长150米，桥面下宽14.6米，桥面上宽6.56米，高7米，横卧在东堤与南湖岛之间。桥身由十七个发券孔组成，正中一孔最大两侧依次渐小。桥正中额栏上北刻“灵鼍偃月”，南刻“修蝀凌波”。桥栏望柱共62对，望柱柱头雕有石狮540余只，形态各异。桥东西两端有4只石刻靠山兽，威武勇猛，形态生动。十七孔桥是古代园林建筑的艺术杰作，为研究清乾隆时期的园林建筑提供了实物资料。
+              </p>
+            </div>
+          </article>
+
+          <article class="famous-item is-image-right">
+            <figure class="famous-item-media">
+              <img src="../../img/宝带桥.jpg" alt="宝带桥" loading="lazy" />
+            </figure>
+            <div class="famous-item-content">
+              <div class="famous-item-headline" aria-hidden="true">
+                <span class="line"></span>
+                <span class="word">拱桥</span>
+              </div>
+              <h3 class="famous-item-title">宝带桥</h3>
+              <p class="famous-item-text">
+                宝带桥（Baodai
+                Bridge），别名长桥，是中国江苏省苏州市境内的一座桥梁，南北横卧于大运河和澹台湖之间的玳玳河口，与古运河平行，是中国古代十大名桥之一，也是中国现存的古代桥梁中，最长的一座多孔石桥，是中国现存最长、保存最完整的一座大型古代连拱石桥。宝带桥始建唐元和十一年（816年）；唐元和十四年（819年），宝带桥竣工投入使用；明正统十一年（1446年），宝带桥重新建设，形制与规模多基本沿袭至今；清同治二年（公元1863年），英军戈登驾舰攻打苏州，宝带桥连续倒塌；1956年，宝带桥修葺恢复旧观。
+              </p>
+            </div>
+          </article>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="../common/bridge-carousel.js"></script>
+  <script src="./archbridge.js"></script>
+</body>
+
+</html>
