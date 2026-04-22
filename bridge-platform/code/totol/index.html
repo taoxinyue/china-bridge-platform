@@ -1,0 +1,283 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>中国古桥可视化交互平台 - 主页面</title>
+
+  <!-- 基础样式（含背景与搜索模块样式） -->
+  <link rel="stylesheet" href="./search/search.css" />
+
+  <!-- 总览模块样式 -->
+  <link rel="stylesheet" href="./overview/overview.css" />
+
+  <!-- 地图模块 -->
+  <link rel="stylesheet" href="./map/map.css" />
+
+  <!-- 时间线模块（视口底栏） -->
+  <link rel="stylesheet" href="./timeline/timeline.css" />
+
+  <!-- ECharts + GL（3D 省级地图） -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+</head>
+
+<body>
+  <div class="intro-overlay" id="intro-overlay" role="button" tabindex="0" aria-label="点击进入主界面">
+    <div class="intro-overlay__mist" aria-hidden="true"></div>
+    <div class="intro-title" aria-hidden="true">
+      <span>古</span>
+      <span>代</span>
+      <span>桥</span>
+      <span>梁</span>
+    </div>
+  </div>
+
+  <main class="totol-main">
+    <section class="bridge-search-wrapper" aria-label="古桥搜索">
+      <div class="bridge-search-bar" role="search">
+        <span class="bridge-search-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M10.5 18.5C14.6421 18.5 18 15.1421 18 11C18 6.85786 14.6421 3.5 10.5 3.5C6.35786 3.5 3 6.85786 3 11C3 15.1421 6.35786 18.5 10.5 18.5Z"
+              stroke="currentColor" stroke-width="2" />
+            <path d="M16.2 16.2L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </span>
+        <input id="bridge-search-input" type="text" placeholder="请输入桥名关键字，例如：卢、通济、廊桥…" autocomplete="off"
+          aria-autocomplete="list" aria-controls="bridge-search-dropdown" aria-expanded="false" />
+      </div>
+
+      <ul id="bridge-search-dropdown" class="bridge-search-dropdown" role="listbox"></ul>
+
+      <div class="bridge-search-hint">
+        
+      </div>
+    </section>
+
+    <!-- 推荐模块（在搜索模块下方） -->
+    <section class="recommendation-module" aria-label="推荐模块">
+      <div class="recommendation-header">
+        <div class="recommendation-title">推荐</div>
+        <div id="recommendation-province" class="recommendation-province">全国</div>
+      </div>
+
+      <div id="recommendation-scroller" class="recommendation-scroller" role="region" aria-label="推荐列表"></div>
+    </section>
+
+    <!-- 命名特色模块（500x375，放在推荐模块下面） -->
+    <section class="naming-module" id="naming-module" aria-label="命名特色模块">
+      <div class="naming-circle naming-root is-visible" id="naming-root" role="button" tabindex="0" aria-label="桥名">
+        桥名
+      </div>
+
+      <!-- Level1 四个类别圆（方向：上祈福寓意 / 下材质结构 / 左诗意意象 / 右地名方位名） -->
+      <div class="naming-circle naming-cat" id="naming-cat-qifu" data-cat="qifu" role="button" tabindex="0">
+        祈福寓意
+      </div>
+      <div class="naming-circle naming-cat" id="naming-cat-material" data-cat="material" role="button" tabindex="0">
+        材质结构
+      </div>
+      <div class="naming-circle naming-cat" id="naming-cat-poetry" data-cat="poetry" role="button" tabindex="0">
+        诗意意象
+      </div>
+      <div class="naming-circle naming-cat" id="naming-cat-place" data-cat="place" role="button" tabindex="0">
+        地名方位名
+      </div>
+
+      <div id="naming-leaves" class="naming-leaves" aria-hidden="true"></div>
+    </section>
+
+    <!-- 地图模块-->
+    <section class="map-module" aria-label="地图模块">
+      <div class="map-chart-wrap">
+        <div id="map-chart" class="map-chart"></div>
+        <div class="map-chart-inset-wrap" aria-hidden="true">
+          <div class="map-chart-inset-title">南海诸岛</div>
+          <div id="map-chart-inset" class="map-chart-inset"></div>
+        </div>
+        <div id="map-marker" class="map-marker" aria-hidden="true">
+          <div class="map-marker-ripple"></div>
+          <div class="map-marker-ripple"></div>
+          <div class="map-marker-pin"></div>
+        </div>
+      </div>
+      <div class="map-bridge-panel" id="map-bridge-panel">
+        <div class="map-bridge-header">
+          <div class="map-bridge-title" id="map-bridge-title">著名桥梁</div>
+          <button type="button" class="map-bridge-toggle" id="map-bridge-toggle" aria-expanded="true"
+            aria-controls="map-bridge-list" title="收起/展开列表">
+            <span class="map-bridge-toggle-icon" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </span>
+          </button>
+        </div>
+        <ul class="map-bridge-list" id="map-bridge-list">
+          <li class="map-bridge-empty">点击省域查看</li>
+        </ul>
+      </div>
+      <div class="map-source-note" aria-label="地图来源说明">
+        地图来源：国家地理信息公共服务平台（天地图）<br />
+        审图号：GS(2024)0650号
+      </div>
+    </section>
+
+    <div class="overview-appreciation-group">
+      <!-- 总览模块 -->
+      <section class="overview-frame" aria-label="总览模块">
+        <div class="overview-left">
+          <div class="total-ring-wrap" id="total-ring-wrap">
+            <div class="total-ring">
+              <div class="ring" aria-hidden="true"></div>
+              <div class="ring-inner">
+                <div class="ring-value">100</div>
+                <div class="ring-label">桥梁总数</div>
+              </div>
+            </div>
+            <div class="ring-tooltip" role="tooltip">
+              纳入全国重点文物保护单位
+            </div>
+          </div>
+        </div>
+
+        <div class="overview-right">
+          <div class="chart-title">图表</div>
+
+          <div class="chart-buttons" role="group" aria-label="图表切换按钮">
+            <button class="mode-btn is-active" type="button" data-panel="province" id="btn-panel-province">
+              省代表图
+            </button>
+            <button class="mode-btn" type="button" data-panel="dynasty" id="btn-panel-dynasty">
+              朝代表图
+            </button>
+            <button class="mode-btn is-active" type="button" data-style="pie" id="btn-style-pie">
+              饼状图
+            </button>
+            <button class="mode-btn" type="button" data-style="bar" id="btn-style-bar">
+              水平柱状图
+            </button>
+          </div>
+
+          <div class="chart-area">
+            <div id="chart-scroll" class="chart-scroll is-pie">
+              <div id="overview-chart" class="overview-chart"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 鉴赏模块（位于总览下方） -->
+      <section class="appreciation-module" aria-label="鉴赏模块">
+        <div class="appreciation-title"></div>
+        <div id="appreciation-chart" class="appreciation-chart"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- 中国古代桥梁发展时间线：全视口宽、高 200px、贴底横向卷轴 -->
+  <aside class="timeline-dock" id="timeline-dock" aria-label="中国古代桥梁发展时间线">
+    <div class="timeline-dock-header">
+      <span>中国古代桥梁发展时间线</span>
+      <button type="button" class="timeline-toggle" id="timeline-toggle" aria-expanded="true"
+        aria-controls="timeline-dock" title="收起时间线">
+        <span class="timeline-toggle-icon" aria-hidden="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 15l6-6 6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </span>
+      </button>
+    </div>
+    <div class="timeline-dock-body">
+      <div class="timeline-scroll-cap" aria-hidden="true"></div>
+      <div class="timeline-scroll-outer">
+        <div class="timeline-scroll" role="region" aria-label="四阶段横向卷轴">
+          <article class="timeline-phase">
+            <span class="timeline-phase-num">第一阶段</span>
+            <h3 class="timeline-phase-title">西周春秋及以前 · 创始时期</h3>
+            <p class="timeline-phase-body">原始独木桥、天然石梁。</p>
+            <div class="timeline-phase-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 24 L32 10 L60 24" stroke="#7a5c3e" stroke-width="1.2" />
+                <line x1="8" y1="24" x2="56" y2="24" stroke="#7a5c3e" stroke-width="0.8" />
+              </svg>
+            </div>
+          </article>
+          <article class="timeline-phase">
+            <span class="timeline-phase-num">第二阶段</span>
+            <h3 class="timeline-phase-title">秦汉 · 创建发展时期</h3>
+            <p class="timeline-phase-body">
+              梁桥、拱桥、索桥、浮桥四种基本桥型都已出现并初具规模。
+            </p>
+            <div class="timeline-phase-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 24 Q32 6 58 24" stroke="#7a5c3e" stroke-width="1.2" />
+                <line x1="6" y1="24" x2="58" y2="24" stroke="#7a5c3e" stroke-width="0.8" />
+              </svg>
+            </div>
+          </article>
+          <article class="timeline-phase">
+            <span class="timeline-phase-num">第三阶段</span>
+            <h3 class="timeline-phase-title">隋唐宋 · 全盛时期</h3>
+            <p class="timeline-phase-body">
+              赵州式敞肩拱桥、桥市繁荣；在建造各种桥型桥梁的技术上都有突破和创新，把古桥建筑推到了高峰。
+            </p>
+            <div class="timeline-phase-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 24 L20 12 L32 18 L44 10 L60 24" stroke="#7a5c3e" stroke-width="1.2" />
+              </svg>
+            </div>
+          </article>
+          <article class="timeline-phase">
+            <span class="timeline-phase-num">第四阶段</span>
+            <h3 class="timeline-phase-title">元明清 · 继承发展时期</h3>
+            <p class="timeline-phase-body">卢沟桥、江南廊桥、风雨桥。</p>
+            <div class="timeline-phase-icon" aria-hidden="true">
+              <svg viewBox="0 0 64 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="14" width="44" height="10" rx="1" stroke="#7a5c3e" stroke-width="1" fill="none" />
+                <path d="M14 14 L32 6 L50 14" stroke="#7a5c3e" stroke-width="1" />
+              </svg>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="timeline-scroll-cap is-right" aria-hidden="true"></div>
+    </div>
+    <div class="timeline-axis">
+      <div class="timeline-axis-line"></div>
+      <div class="timeline-axis-segments">
+        <div class="timeline-axis-seg">
+          <span class="timeline-axis-label">先秦—春秋战国</span>
+          <span class="timeline-axis-sub">周 · 春秋 · 战国</span>
+        </div>
+        <div class="timeline-axis-seg">
+          <span class="timeline-axis-label">秦—南北朝</span>
+          <span class="timeline-axis-sub">秦 · 两汉 · 魏晋南北朝</span>
+        </div>
+        <div class="timeline-axis-seg">
+          <span class="timeline-axis-label">隋—宋</span>
+          <span class="timeline-axis-sub">隋 · 唐 · 五代十国 · 宋</span>
+        </div>
+        <div class="timeline-axis-seg">
+          <span class="timeline-axis-label">元—清</span>
+          <span class="timeline-axis-sub">元 · 明 · 清</span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <script type="module" src="./search/search.js"></script>
+  <script type="module" src="./overview/overview.js"></script>
+  <script type="module" src="./overview/appreciation.js"></script>
+  <script type="module" src="./recommendation/recommendation.js"></script>
+  <script type="module" src="./naming/naming.js"></script>
+  <script src="./map/map.js"></script>
+  <script src="./timeline/timeline.js"></script>
+  <script src="./intro/intro.js"></script>
+</body>
+
+</html>

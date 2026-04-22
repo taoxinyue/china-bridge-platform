@@ -1,0 +1,315 @@
+:root {
+  --tl-paper: rgba(252, 244, 228, 0.6);
+  --tl-paper-deep: rgba(245, 232, 210, 0.6);
+  --tl-ink: #3d2a1c;
+  --tl-ink-soft: rgba(61, 42, 28, 0.78);
+  --tl-sepia: #7a5c3e;
+  --tl-gold: rgba(180, 140, 72, 0.45);
+  --tl-line: rgba(120, 88, 58, 0.35);
+}
+
+body {
+  padding-bottom: 200px;
+}
+
+body.timeline-dock-collapsed {
+  padding-bottom: 42px;
+}
+
+.timeline-dock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 200px;
+  z-index: 120;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, var(--tl-paper) 0%, var(--tl-paper-deep) 100%);
+  border-top: 1px solid var(--tl-line);
+  box-shadow: 0 -6px 18px rgba(60, 42, 28, 0.08);
+  font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "宋体", serif;
+  color: var(--tl-ink);
+  transition: height 0.24s ease, box-shadow 0.24s ease;
+}
+
+.timeline-dock.is-collapsed {
+  height: 42px;
+  box-shadow: 0 -4px 14px rgba(60, 42, 28, 0.1);
+}
+
+.timeline-dock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-shrink: 0;
+  padding: 4px 16px 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--tl-sepia);
+  border-bottom: 1px solid var(--tl-line);
+  background: linear-gradient(90deg, transparent, rgba(180, 140, 72, 0.08), transparent);
+}
+
+.timeline-toggle {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(122, 92, 62, 0.28);
+  border-radius: 6px;
+  background: rgba(255, 250, 242, 0.7);
+  color: var(--tl-sepia);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.timeline-toggle:hover {
+  background: rgba(240, 220, 192, 0.6);
+  color: #5f452c;
+}
+
+.timeline-toggle:focus-visible {
+  outline: 2px solid rgba(122, 92, 62, 0.45);
+  outline-offset: 1px;
+}
+
+.timeline-toggle-icon {
+  display: inline-flex;
+  transition: transform 0.22s ease;
+}
+
+.timeline-dock.is-collapsed .timeline-toggle-icon {
+  transform: rotate(180deg);
+}
+
+.timeline-dock-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: stretch;
+  position: relative;
+}
+
+.timeline-dock.is-collapsed .timeline-dock-body,
+.timeline-dock.is-collapsed .timeline-axis {
+  display: none;
+}
+
+.timeline-scroll-cap {
+  flex-shrink: 0;
+  width: 28px;
+  background: center / auto 100% no-repeat url("../../../img/卷轴.png");
+  opacity: 0.92;
+  pointer-events: none;
+}
+
+.timeline-scroll-cap.is-right {
+  transform: scaleX(-1);
+}
+
+.timeline-scroll-outer {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.timeline-scroll {
+  display: flex;
+  flex-direction: row;
+  gap: 14px;
+  height: 100%;
+  padding: 8px 10px 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+.timeline-scroll::-webkit-scrollbar {
+  height: 5px;
+}
+
+.timeline-scroll::-webkit-scrollbar-track {
+  background: rgba(120, 88, 58, 0.08);
+  border-radius: 3px;
+}
+
+.timeline-scroll::-webkit-scrollbar-thumb {
+  background: rgba(120, 88, 58, 0.35);
+  border-radius: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-scroll {
+    scroll-behavior: auto;
+  }
+}
+
+.timeline-phase {
+  flex: 0 0 min(420px, 78vw);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px 8px 12px;
+  border: 1px solid var(--tl-line);
+  border-radius: 4px;
+  background: linear-gradient(145deg, rgba(255, 252, 246, 0.58) 0%, rgba(248, 238, 220, 0.58) 100%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5), 0 2px 8px rgba(90, 60, 40, 0.06);
+  position: relative;
+}
+
+.timeline-phase::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  border-radius: 1px;
+  background: linear-gradient(180deg, var(--tl-gold), rgba(180, 140, 72, 0.15));
+}
+
+.timeline-phase-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--tl-sepia);
+  letter-spacing: 0.08em;
+  padding-left: 8px;
+}
+
+.timeline-phase-title {
+  margin: 0;
+  padding-left: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--tl-ink);
+}
+
+.timeline-phase-body {
+  margin: 0;
+  padding-left: 8px;
+  padding-right: 52px;
+  font-size: 10.5px;
+  line-height: 1.55;
+  color: var(--tl-ink-soft);
+  flex: 1;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+}
+
+.timeline-phase-icon {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  width: 56px;
+  height: 28px;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.timeline-phase-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.timeline-axis {
+  flex-shrink: 0;
+  height: 44px;
+  padding: 0 12px 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 2px;
+  border-top: 1px solid var(--tl-line);
+  background: rgba(248, 236, 216, 0.2);
+}
+
+.timeline-axis-line {
+  height: 2px;
+  margin: 0 36px 0 36px;
+  background: linear-gradient(90deg,
+      transparent,
+      var(--tl-sepia) 4%,
+      var(--tl-sepia) 96%,
+      transparent);
+  border-radius: 1px;
+  opacity: 0.42;
+  position: relative;
+}
+
+.timeline-axis-line::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 6px;
+  margin-top: -3px;
+  background: repeating-linear-gradient(90deg,
+      transparent,
+      transparent 7px,
+      rgba(120, 88, 58, 0.2) 7px,
+      rgba(120, 88, 58, 0.2) 8px);
+  pointer-events: none;
+}
+
+.timeline-axis-segments {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+  min-height: 28px;
+}
+
+.timeline-axis-seg {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  padding: 0 4px;
+  border-left: 1px solid rgba(120, 88, 58, 0.2);
+  position: relative;
+}
+
+.timeline-axis-seg:first-child {
+  border-left: none;
+}
+
+.timeline-axis-seg::before {
+  content: "";
+  width: 0;
+  height: 8px;
+  border-left: 1px solid var(--tl-sepia);
+  opacity: 0.65;
+  margin-bottom: 2px;
+}
+
+.timeline-axis-label {
+  font-size: 9px;
+  line-height: 1.35;
+  color: var(--tl-ink-soft);
+  font-weight: 600;
+}
+
+.timeline-axis-sub {
+  font-size: 8px;
+  color: rgba(90, 70, 52, 0.65);
+  margin-top: 1px;
+  line-height: 1.25;
+}
